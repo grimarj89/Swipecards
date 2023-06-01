@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 public class MyActivity extends Activity {
@@ -23,14 +20,16 @@ public class MyActivity extends Activity {
     private ArrayAdapter<String> arrayAdapter;
     private int i;
 
-    @InjectView(R.id.frame) SwipeFlingAdapterView flingContainer;
-
+    SwipeFlingAdapterView flingContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        ButterKnife.inject(this);
+
+        flingContainer = findViewById(R.id.frame);
+        Button bLeft = findViewById(R.id.left);
+        Button bRight = findViewById(R.id.right);
 
 
         al = new ArrayList<>();
@@ -44,7 +43,6 @@ public class MyActivity extends Activity {
         al.add("javascript");
 
         arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
-
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -88,12 +86,10 @@ public class MyActivity extends Activity {
 
 
         // Optionally add an OnItemClickListener
-        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
-                makeToast(MyActivity.this, "Clicked!");
-            }
-        });
+        flingContainer.setOnItemClickListener((itemPosition, dataObject) -> makeToast(MyActivity.this, "Clicked!"));
+
+        bLeft.setOnClickListener( view ->  flingContainer.getTopCardListener().selectLeft() );
+        bRight.setOnClickListener( view -> flingContainer.getTopCardListener().selectRight());
 
     }
 
@@ -101,19 +97,6 @@ public class MyActivity extends Activity {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-
-    @OnClick(R.id.right)
-    public void right() {
-        /**
-         * Trigger the right event manually.
-         */
-        flingContainer.getTopCardListener().selectRight();
-    }
-
-    @OnClick(R.id.left)
-    public void left() {
-        flingContainer.getTopCardListener().selectLeft();
-    }
 
 
 
