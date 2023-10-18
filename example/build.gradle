@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+    compileSdk Integer.parseInt(project.TARGET_SDK_VERSION)
 
     defaultConfig {
         applicationId "com.lorentzos.swipecards.example"
